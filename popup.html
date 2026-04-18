@@ -1,0 +1,60 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Kaptur</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <script>
+    tailwind.config = {
+      theme: {
+        extend: {
+          colors: {
+            kaptur: {
+              500: '#8B5CF6',
+              600: '#7C3AED',
+              700: '#6D28D9'
+            }
+          }
+        }
+      }
+    }
+  </script>
+  <link rel="stylesheet" href="styles.css">
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&amp;display=swap" rel="stylesheet">
+</head>
+<body class="bg-gradient-to-br from-slate-900 via-purple-900/20 to-slate-900 min-h-72 w-80 p-6 font-inter text-white">
+  <div class="text-center mb-6">
+    <h1 class="text-2xl font-bold text-white mb-2">Kaptur</h1>
+    <p class="text-sm text-slate-400">Capture Meet intelligent</p>
+  </div>
+
+  <div id="stats" class="grid grid-cols-2 gap-4 mb-6 text-center">
+    <div>
+      <div id="participantCount" class="text-2xl font-bold text-kaptur-500">0</div>
+      <div class="text-xs text-slate-400 uppercase tracking-wider">Participants</div>
+    </div>
+    <div>
+      <div id="captureCount" class="text-2xl font-bold text-kaptur-500">0</div>
+      <div class="text-xs text-slate-400 uppercase tracking-wider">Captures</div>
+    </div>
+  </div>
+
+  <div class="space-y-3">
+    <button id="startBtn" class="w-full bg-gradient-to-r from-kaptur-500 to-kaptur-600 hover:from-kaptur-600 hover:to-kaptur-700 text-white font-medium py-3 px-4 rounded-xl shadow-lg hover:shadow-xl transition-all duration-200">
+      Démarrer
+    </button>
+    <button id="stopBtn" class="w-full bg-gradient-to-r from-slate-600 to-slate-700 hover:from-slate-700 hover:to-slate-800 text-white font-medium py-3 px-4 rounded-xl shadow-lg hover:shadow-xl transition-all duration-200 opacity-50">
+      Arrêter
+    </button>
+    <button id="exportBtn" class="w-full bg-gradient-to-r from-emerald-500 to-emerald-600 hover:from-emerald-600 hover:to-emerald-700 text-white font-medium py-3 px-4 rounded-xl shadow-lg hover:shadow-xl transition-all duration-200">
+      Exporter PDF
+    </button>
+  </div>
+
+  <div id="status" class="mt-4 text-xs text-center text-slate-500 font-mono">Prêt</div>
+
+  <script src="popup.js"></script>
+</body>
+</html>
+

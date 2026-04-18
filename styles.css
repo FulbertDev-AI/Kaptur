@@ -1,0 +1,69 @@
+/* styles.css - Styles futuristes personnalisés */
+@import url('https://fonts.googleapis.com/css2?family=Orbitron:wght@400;700;900&display=swap');
+
+* {
+  box-sizing: border-box;
+}
+
+body {
+  font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
+}
+
+h1 {
+  font-family: 'Orbitron', monospace;
+  font-weight: 700;
+  letter-spacing: -0.025em;
+}
+
+#startBtn {
+  box-shadow: 0 10px 25px rgba(139, 92, 246, 0.4);
+  position: relative;
+  overflow: hidden;
+}
+
+#startBtn::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: -100%;
+  width: 100%;
+  height: 100%;
+  background: linear-gradient(90deg, transparent, rgba(255,255,255,0.2), transparent);
+  transition: left 0.5s;
+}
+
+#startBtn:hover::before {
+  left: 100%;
+}
+
+#stats div {
+  background: linear-gradient(145deg, rgba(139,92,246,0.1), transparent);
+  border-radius: 12px;
+  padding: 12px;
+  border: 1px solid rgba(139,92,246,0.2);
+  backdrop-filter: blur(10px);
+}
+
+button {
+  position: relative;
+}
+
+button:not(:disabled):hover {
+  transform: translateY(-1px);
+}
+
+#status {
+  font-family: 'Orbitron', monospace;
+  font-size: 0.65rem;
+  letter-spacing: 0.05em;
+}
+
+/* Print styles pour rapport */
+@media print {
+  body { 
+    background: white !important; 
+    color: black !important;
+    -webkit-print-color-adjust: exact;
+  }
+}
+

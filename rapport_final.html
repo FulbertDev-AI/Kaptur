@@ -1,0 +1,99 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Rapport Kaptur - Réunion Google Meet</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&amp;display=swap" rel="stylesheet">
+  <style>
+    @media print {
+      body { 
+        background: white !important; 
+        color: black !important;
+        -webkit-print-color-adjust: exact;
+        print-color-adjust: exact;
+      }
+      .no-print { display: none !important; }
+      img { max-width: 100%; height: auto; page-break-inside: avoid; }
+      .page-break { page-break-before: always; }
+    }
+    body { font-family: 'Inter', sans-serif; }
+    .screenshot { max-width: 100%; height: auto; border-radius: 8px; box-shadow: 0 4px 20px rgba(0,0,0,0.3); }
+  </style>
+</head>
+<body class="bg-gradient-to-br from-slate-900 to-slate-800 min-h-screen p-8 text-white">
+  <button id="printBtn" class="no-print mb-6 px-6 py-3 bg-gradient-to-r from-emerald-500 to-emerald-600 hover:from-emerald-600 hover:to-emerald-700 text-white font-semibold rounded-xl shadow-lg transition-all">
+    Imprimer/Sauvegarder PDF
+  </button>
+
+  <div id="reportContent" class="max-w-4xl mx-auto">
+    <header class="text-center mb-12">
+      <h1 class="text-4xl md:text-5xl font-bold bg-gradient-to-r from-purple-400 to-pink-500 bg-clip-text text-transparent mb-4">
+        Rapport Kaptur
+      </h1>
+      <p id="meetingTitle" class="text-2xl font-semibold text-slate-300 mb-2">Réunion Google Meet</p>
+      <p id="meetingDate" class="text-lg text-slate-400"></p>
+    </header>
+
+    <section class="mb-12">
+      <h2 class="text-3xl font-bold mb-6 text-white">Participants</h2>
+      <ul id="participantsList" class="grid md:grid-cols-2 lg:grid-cols-3 gap-4"></ul>
+    </section>
+
+    <section class="mb-12">
+      <h2 class="text-3xl font-bold mb-6 text-white">Historique Chat</h2>
+      <div id="chatHistory" class="bg-slate-800/50 backdrop-blur-sm p-6 rounded-2xl border border-slate-700 space-y-4 max-h-96 overflow-y-auto"></div>
+    </section>
+
+    <section>
+      <h2 class="text-3xl font-bold mb-6 text-white">Captures d'écran</h2>
+      <div id="screenshotsGrid" class="grid md:grid-cols-2 lg:grid-cols-3 gap-6"></div>
+    </section>
+  </div>
+
+  <script>
+    chrome.runtime.onMessage.addListener((request) => {
+      if (request.action === 'loadReportData') {
+        loadReport(request.data);
+      }
+    });
+
+    function loadReport(data) {
+      document.getElementById('meetingDate').textContent = new Date().toLocaleString('fr-FR');
+      
+      // Participants
+      const participantsList = document.getElementById('participantsList');
+      (data.participants || []).forEach(p => {
+        const li = document.createElement('li');
+        li.className = 'bg-gradient-to-r from-slate-700 to-slate-800 p-4 rounded-xl shadow-lg border border-slate-600 flex items-center gap-3';
+        li.innerHTML = `<div class="w-12 h-12 bg-gradient-to-br from-purple-500 to-pink-500 rounded-full flex items-center justify-center font-bold text-sm">${p.name.charAt(0).toUpperCase() }</div><div><h3 class="font-semibold">${p.name}</h3><p class="text-sm text-slate-400">Rejoint: ${new Date(p.joined).toLocaleString('fr-FR')}</p></div>`;
+        participantsList.appendChild(li);
+      });
+
+      // Chat
+      const chatHistory = document.getElementById('chatHistory');
+      (data.chat || []).slice(-50).reverse().forEach(msg => {
+        const div = document.createElement('div');
+        div.className = 'flex gap-3 p-3 bg-slate-800/50 rounded-xl hover:bg-slate-700/50 transition-colors';
+        div.innerHTML = `<div class="w-10 h-10 bg-gradient-to-br from-kaptur-500 to-purple-600 rounded-full flex items-center justify-center font-semibold text-xs flex-shrink-0">${msg.author.charAt(0).toUpperCase() }</div><div class="flex-1"><p class="font-semibold text-sm">${msg.author}</p><p class="text-slate-300">${msg.text}</p><p class="text-xs text-slate-500 mt-1">${new Date(msg.timestamp).toLocaleString('fr-FR')}</p></div>`;
+        chatHistory.appendChild(div);
+      });
+
+      // Screenshots
+      const screenshotsGrid = document.getElementById('screenshotsGrid');
+      (data.captures || []).forEach((capture, index) => {
+        const div = document.createElement('div');
+        div.className = 'bg-slate-800/70 backdrop-blur-sm p-6 rounded-2xl shadow-2xl border border-slate-700 hover:shadow-3xl transition-all group';
+        div.innerHTML = `<div class="relative mb-4"><img src="${capture.screenshot}" alt="Capture ${index+1}" class="screenshot rounded-xl w-full shadow-2xl"><div class="absolute top-2 right-2 bg-black/70 text-white px-2 py-1 rounded text-xs">#${index+1}</div></div><p class="font-mono text-sm text-slate-400">${new Date(capture.timestamp).toLocaleString('fr-FR')}</p>`;
+        screenshotsGrid.appendChild(div);
+      });
+    }
+
+    document.getElementById('printBtn').onclick = () => {
+      window.print();
+    };
+  </script>
+</body>
+</html>
+

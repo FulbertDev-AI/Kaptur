@@ -1,0 +1,25 @@
+{
+  "manifest_version": 3,
+  "name": "Kaptur",
+  "version": "1.0",
+  "description": "Extension pour recenser participants, chat et captures d'écran automatiques toutes les 5 minutes sur Google Meet.",
+  "permissions": ["activeTab", "tabs", "storage", "unlimitedStorage", "alarms"],
+  "host_permissions": ["https://meet.google.com/*"],
+  "background": {
+    "service_worker": "background.js"
+  },
+  "content_scripts": [{
+    "matches": ["https://meet.google.com/*"],
+    "js": ["content.js"]
+  }],
+  "action": {
+    "default_popup": "popup.html",
+    "default_title": "Kaptur"
+  },
+  "icons": {
+    "16": "assets/kaptur.png",
+    "32": "assets/kaptur.png",
+    "48": "assets/kaptur.png",
+    "128": "assets/kaptur.png"
+  }
+}
